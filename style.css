@@ -6,7 +6,7 @@ body {
   padding-top: 40px;
 }
 
-#puzzle-container {
+#puzzle-container, #setup-container {
   display: grid;
   grid-template-columns: repeat(3, 80px);
   grid-template-rows: repeat(3, 80px);

@@ -1,15 +1,23 @@
 // script.js
-const container = document.getElementById("puzzle-container");
+const puzzleContainer = document.getElementById("puzzle-container");
+const setupContainer = document.getElementById("setup-container");
 const message = document.getElementById("message");
+const setupScreen = document.getElementById("setup-screen");
+const gameScreen = document.getElementById("game-screen");
+const startButton = document.getElementById("start-game");
+const nextNumberSpan = document.getElementById("next-number");
+
 let tiles = [];
+let setupTiles = Array(9).fill(null);
+let currentSetupIndex = 1;
 
 function createTiles() {
   tiles = [...Array(8).keys()].map(n => n + 1);
-  tiles.push(0); // 0 represents the empty tile
+  tiles.push(0);
 }
 
 function renderTiles() {
-  container.innerHTML = "";
+  puzzleContainer.innerHTML = "";
   tiles.forEach((num, i) => {
     const tile = document.createElement("div");
     tile.className = "tile";
@@ -17,7 +25,7 @@ function renderTiles() {
       tile.textContent = num;
       tile.onclick = () => tryMove(i);
     }
-    container.appendChild(tile);
+    puzzleContainer.appendChild(tile);
   });
 }
 
@@ -67,5 +75,41 @@ function checkWin() {
   }
 }
 
-createTiles();
-shuffleTiles();
+function initSetup() {
+  setupContainer.innerHTML = "";
+  setupTiles = Array(9).fill(null);
+  currentSetupIndex = 1;
+  nextNumberSpan.textContent = currentSetupIndex;
+  startButton.disabled = true;
+
+  for (let i = 0; i < 9; i++) {
+    const tile = document.createElement("div");
+    tile.className = "tile";
+    tile.onclick = () => placeTile(i, tile);
+    setupContainer.appendChild(tile);
+  }
+}
+
+function placeTile(i, tileElement) {
+  if (setupTiles[i] !== null || currentSetupIndex > 9) return;
+
+  const value = currentSetupIndex === 9 ? 0 : currentSetupIndex;
+  setupTiles[i] = value;
+  tileElement.textContent = value === 0 ? "" : value;
+  currentSetupIndex++;
+  nextNumberSpan.textContent = currentSetupIndex === 9 ? "0 (blank)" : currentSetupIndex;
+
+  if (!setupTiles.includes(null)) {
+    startButton.disabled = false;
+  }
+}
+
+startButton.onclick = () => {
+  tiles = [...setupTiles];
+  setupScreen.style.display = "none";
+  gameScreen.style.display = "block";
+  renderTiles();
+};
+
+// Initialize setup mode on load
+initSetup();
