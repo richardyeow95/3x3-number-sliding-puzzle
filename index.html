@@ -1,24 +1,26 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>3x3 Sliding Puzzle</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <h1>3x3 Sliding Puzzle</h1>
   <div id="setup-screen">
-    <p>Click tiles in the order you want them to appear (0 for blank):</p>
-    <div id="setup-container"></div>
-    <p id="setup-instructions">Tile to place: <span id="next-number">1</span></p>
+    <h2>Setup Puzzle</h2>
+    <p>Click to place numbers in order. Next: <span id="next-number">1</span></p>
+    <div id="setup-container" class="grid"></div>
     <button id="start-game" disabled>Start Puzzle</button>
+    <button id="preset-button">Use Specific Starting Position</button>
+    <button id="toggle-setup">Choose Starting Position</button>
   </div>
 
   <div id="game-screen" style="display: none;">
-    <div id="puzzle-container"></div>
+    <h2>Sliding Puzzle</h2>
+    <div id="puzzle-container" class="grid"></div>
     <p id="message"></p>
-    <button onclick="shuffleTiles()">Shuffle</button>
   </div>
 
   <script src="script.js"></script>
