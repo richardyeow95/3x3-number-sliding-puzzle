@@ -1,34 +1,36 @@
-// script.js
 const puzzleContainer = document.getElementById("puzzle-container");
 const message = document.getElementById("message");
-const gameScreen = document.getElementById("game-screen");
-const startButton = document.getElementById("start-game");
-const nextNumberSpan = document.getElementById("next-number");
 
-let tiles = [];
-let setupTiles = Array(9).fill(null);
-let currentSetupIndex = 1;
-
-function createTiles() {
-  tiles = [...Array(8).keys()].map(n => n + 1);
-  tiles.push(0);
-}
-
-// Fixed starting position
-tiles = [8, 1, 6, 0, 5, 7, 4, 2, 3];
-setupScreen.style.display = "none";
-gameScreen.style.display = "block";
-renderTiles();
+let tiles = [8, 1, 6, 0, 5, 7, 4, 2, 3];
 
 function renderTiles() {
   puzzleContainer.innerHTML = "";
   tiles.forEach((num, i) => {
     const tile = document.createElement("div");
     tile.className = "tile";
+    tile.setAttribute("draggable", true);
+    tile.dataset.index = i;
+
     if (num !== 0) {
       tile.textContent = num;
       tile.onclick = () => tryMove(i);
     }
+
+    tile.ondragstart = e => {
+      e.dataTransfer.setData("text/plain", i);
+    };
+
+    tile.ondragover = e => {
+      e.preventDefault();
+    };
+
+    tile.ondrop = e => {
+      e.preventDefault();
+      const fromIndex = parseInt(e.dataTransfer.getData("text/plain"));
+      const toIndex = parseInt(tile.dataset.index);
+      trySwap(fromIndex, toIndex);
+    };
+
     puzzleContainer.appendChild(tile);
   });
 }
@@ -48,15 +50,13 @@ function tryMove(index) {
   }
 }
 
-function shuffleTiles() {
-  do {
-    for (let i = tiles.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [tiles[i], tiles[j]] = [tiles[j], tiles[i]];
-    }
-  } while (!isSolvable(tiles) || isSolved());
-  renderTiles();
-  message.textContent = "";
+function trySwap(fromIndex, toIndex) {
+  const emptyIndex = tiles.indexOf(0);
+  if (toIndex === emptyIndex || fromIndex === emptyIndex) {
+    [tiles[fromIndex], tiles[toIndex]] = [tiles[toIndex], tiles[fromIndex]];
+    renderTiles();
+    checkWin();
+  }
 }
 
 function isSolved() {
@@ -69,3 +69,5 @@ function checkWin() {
   }
 }
 
+// Load fixed starting position immediately
+renderTiles();

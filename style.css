@@ -1,12 +1,10 @@
-/* style.css */
 body {
-  font-family: Arial, sans-serif;
+  font-family: sans-serif;
   text-align: center;
-  background: #f0f0f0;
-  padding-top: 40px;
+  padding: 20px;
 }
 
-#puzzle-container, #setup-container {
+.grid {
   display: grid;
   grid-template-columns: repeat(3, 80px);
   grid-template-rows: repeat(3, 80px);
@@ -16,31 +14,19 @@ body {
 }
 
 .tile {
-  width: 80px;
-  height: 80px;
-  font-size: 24px;
-  background-color: #ffffff;
-  border: 2px solid #999;
   display: flex;
-  align-items: center;
   justify-content: center;
+  align-items: center;
+  background-color: #ddd;
+  font-size: 24px;
   cursor: pointer;
-  transition: background 0.2s;
+  user-select: none;
+  height: 80px;
+  width: 80px;
+  border: 2px solid #888;
 }
 
 .tile:empty {
-  background: #ccc;
-  cursor: default;
-}
-
-button {
-  padding: 10px 20px;
-  font-size: 16px;
-  margin-top: 20px;
-}
-
-#message {
-  font-weight: bold;
-  color: green;
-  margin-top: 10px;
+  background-color: white;
+  border: 2px dashed #ccc;
 }
