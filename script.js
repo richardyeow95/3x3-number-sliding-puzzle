@@ -14,6 +14,12 @@ function createTiles() {
   tiles.push(0);
 }
 
+// Fixed starting position
+tiles = [8, 1, 6, 0, 5, 7, 4, 2, 3];
+setupScreen.style.display = "none";
+gameScreen.style.display = "block";
+renderTiles();
+
 function renderTiles() {
   puzzleContainer.innerHTML = "";
   tiles.forEach((num, i) => {
@@ -53,16 +59,6 @@ function shuffleTiles() {
   message.textContent = "";
 }
 
-function isSolvable(arr) {
-  let invCount = 0;
-  for (let i = 0; i < 8; i++) {
-    for (let j = i + 1; j < 9; j++) {
-      if (arr[i] && arr[j] && arr[i] > arr[j]) invCount++;
-    }
-  }
-  return invCount % 2 === 0;
-}
-
 function isSolved() {
   return tiles.slice(0, 8).every((n, i) => n === i + 1);
 }
@@ -73,8 +69,3 @@ function checkWin() {
   }
 }
 
-// Fixed starting position
-tiles = [8, 1, 6, 0, 5, 7, 4, 2, 3];
-setupScreen.style.display = "none";
-gameScreen.style.display = "block";
-renderTiles();
